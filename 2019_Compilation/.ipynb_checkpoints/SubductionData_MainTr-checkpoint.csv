@@ -1,0 +1,14 @@
+reconstruction_time, lon, lat, age, trench_normal_azimuth, convergence_obliquity_degrees, convergence_velocity_magnitude_cm_per_yr, convergence_velocity_magnitude_sign, convergence_velocity_normal_cm_per_year, convergence_velocity_parallel_cm_per_year, trench_absolute_obliquity_degrees, trench_absolute_velocity_magnitude, trench_absolute_velocity_magnitude_sign, trench_absolute_velocity_normal_cm_per_year, trench_absolute_velocity_parallel_cm_per_year, subducting_absolute_velocity_degrees, subducting_absolute_velocity_magnitude_cm_per_yr, subducting_absolute_velocity_magnitude_sign, subducting_absolute_velocity_normal_cm_per_year, subducting_absolute_velocity_parallel_cm_per_year, subducting_plate_id, subduction_zone_plate_id, main_plate_id, main_trench_id
+   0.         -179.93753756   50.44490734 ...  111.
+     0.            3.        
+    0.         -179.9055562   -36.93027493 ...  806.
+     0.            7.        
+    0.         -179.66823135  -36.57827807 ...  806.
+     0.            7.        
+ ...
+   40.          174.33026836  -45.69401178 ...  823.
+     0.            9.        
+   40.          174.43209705  -46.04875799 ...  823.
+     0.            9.        
+   40.          174.53957926  -46.32359317 ...  823.
+     0.            9.        
