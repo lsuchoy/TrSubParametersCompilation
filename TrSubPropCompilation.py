@@ -113,17 +113,8 @@ def GenerateCompilationAllPoints(rotation_model, topology_filename, raster_filen
         # Use ridge spreading script to generate sample points along subduction zones at 'time'
         ridge_spreading_data = ridge_spreading_rate.spreading_rates_dense(
                                rotation_model, topology_filename, reconstruction_time, tessellation_threshold_radians)
-        # Sample raster/grid at subduction points
-        ridge_lons = [data[0] for data in ridge_spreading_data] # all lons
-        ridge_lats = [data[1] for data in ridge_spreading_data] # all lats
-        raster_values = sample_grid_using_scipy(ridge_lons, ridge_lats, raster_filename,YEAR) # get all ages
         # iterate over ridge points
-        for point_index, age in enumerate(raster_values): 
-            if np.isnan(age): # check for NaN age
-                age = 0 # because this is a spreading ridge...
-                ### uncomment to exclude points with NaN age. May remove some inland rifts (e.g. East Africa)
-                # continue 
-            ridge_spreading_item = ridge_spreading_data[point_index]
+        for ridge_spreading_item in ridge_spreading_data: 
             lon                                    = ridge_spreading_item[0]
             lat                                    = ridge_spreading_item[1]
             spreading_velocity_magnitude_cm_per_yr = ridge_spreading_item[2]
@@ -134,7 +125,6 @@ def GenerateCompilationAllPoints(rotation_model, topology_filename, raster_filen
             RidgeData.append([reconstruction_time,
                                lon,
                                lat,
-                               age,
                                spreading_velocity_magnitude_cm_per_yr,
                                spreading_obliquity_degrees,
                                arc_length_metres,
@@ -177,7 +167,6 @@ def GenerateCompilationAllPoints(rotation_model, topology_filename, raster_filen
     Titles= ["reconstruction_time",
              "lon",
              "lat",
-             "age",
              "spreading_velocity_magnitude_cm_per_yr",
              "spreading_obliquity_degrees",
              "arc_length_metres",
