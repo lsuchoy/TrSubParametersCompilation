@@ -438,8 +438,7 @@ if __name__ == '__main__':
         ROTFile  = "MergedRot.rot"
         if ROTFile not in os.listdir(Data_Folder): #check if .rot files are merged
             Merge_rot_files(Data_Folder, ROTFile) #merge .rot files
-        rotation_filename = os.path.join(Data_Folder, ROTFile)
-        rotation_model = pygplates.RotationModel(rotation_filename)
+        rotation_model = pygplates.RotationModel(os.path.join(Data_Folder, ROTFile))
         GPMLFile  = "MergedGPML.gpml"
         if GPMLFile not in os.listdir(Data_Folder): #check if .gpml files are merged
             Merge_gpml_files(Data_Folder, GPMLFile) #merge .gpml files
