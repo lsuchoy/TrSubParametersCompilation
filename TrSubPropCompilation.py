@@ -198,7 +198,7 @@ def SaveIDsAndDescriptionsAllPoints(topology_filename,WorkDir):
               "subduction_zone_plate_id"]
     Save_data_as_CSV(Titles,np.unique(SubductionData_AllTr[:,[0,20,21]], axis=0).tolist(),WorkDir,'PointIDs')
 
-def GenerateCompilationMainTrenches(WorkDir):
+def GenerateCompilationMainTrenches(PointsToExclude, WorkDir):
     import numpy as np
     import os
     print('  Creating compilation of main trenches and plates')
@@ -209,30 +209,25 @@ def GenerateCompilationMainTrenches(WorkDir):
     Trenches = np.loadtxt(os.path.join(WorkDir,'MainTrenches.csv'), delimiter = ',', skiprows = 3)
     for i in np.arange(Trenches.shape[0]):
         # find all the poiunts with specific rec. time and IDs
-        Trench = temp[(temp[:,0] == Trenches[i,0]) &
-                      (temp[:,20] == Trenches[i,2]) &
-                      (temp[:,21] == Trenches[i,3]),:]
+        Trench = temp[(temp[:,0] == Trenches[i,0]) & (temp[:,20] == Trenches[i,2]) & (temp[:,21] == Trenches[i,3]),:]
         if Trench.any(): # check if there are points for the specific rec. time and IDs
             # Check if segments appear in more than one main trench
-            temp_app = temp[(temp[:,0] == Trenches[i,0]) &
-                            (temp[:,20] == Trenches[i,2]) &
-                            (temp[:,21] == Trenches[i,3]) &
-                            (temp[:,22] > 0.) ,:]
+            temp_app = temp[(temp[:,0] == Trenches[i,0]) & (temp[:,20] == Trenches[i,2]) & 
+                            (temp[:,21] == Trenches[i,3]) & (temp[:,22] > 0.) ,:]
             if (temp_app.any()):
                 temp_app[:,23] = Trenches[i,1]
                 # add new trench line with the additional ID
-                if len(temp_app[:,23])>1.:
-                    temp = np.append(temp,temp_app,axis=0)
-                else:
-                    temp = np.append(temp,[temp_app],axis=0)
+                if len(temp_app[:,23])>1.: temp = np.append(temp,temp_app,axis=0)
+                else: temp = np.append(temp,[temp_app],axis=0)
             else:
                 ## Set trench value
-                temp[(temp[:,0] == Trenches[i,0]) &
-                     (temp[:,20] == Trenches[i,2]) &
-                     (temp[:,21] == Trenches[i,3]) ,22] = Trenches[i,1]
-    # SubductionData_MainTr = np.array(temp[temp[:,22]>0,:]) ### Uncomment to have the 'main trenches' compilation exclude all non-main trenches
-    SubductionData_MainTr = np.array(temp) ### Add comment to have the 'main trenches' compilation exclude all non-main trenches
-
+                temp[(temp[:,0] == Trenches[i,0]) & (temp[:,20] == Trenches[i,2]) & (temp[:,21] == Trenches[i,3]) ,22] = Trenches[i,1]
+    ### excluding points from main trenches
+    for i in range(PointsToExclude.shape[0]):
+        temp[(temp[:,22]==PointsToExclude[i,0]) & (temp[:,0]==PointsToExclude[i,1]) & (temp[:,1]> PointsToExclude[i,2]) &
+             (temp[:,1 ]< PointsToExclude[i,3]) & (temp[:,2]> PointsToExclude[i,4]) & (temp[:,2]< PointsToExclude[i,5]) ,22] = 0
+    # SubductionData_MainTr = temp[temp[:,22]>0,:] ### Uncomment to have the 'main trenches' compilation exclude all non-main trenches
+    SubductionData_MainTr = temp.copy() ### Add comment to have the 'main trenches' compilation exclude all non-main trenches
     print('    Compiling main plates')
     ### The MainPlates.csv file is manually created by the user and includes which plate IDs at which times be merged into any main plate
     Plates = np.loadtxt(os.path.join(WorkDir,'MainPlates.csv'), delimiter = ',', skiprows = 4)
@@ -403,6 +398,7 @@ def Merge_gpml_files(Data_Folder, GPMLFile):
     
 if __name__ == '__main__':
     import gc, os, pygplates
+    import numpy as np
     gc.collect()
     def main():
         ### Compile the 2019 compilation
@@ -411,18 +407,23 @@ if __name__ == '__main__':
         Data_Folder = os.path.join(WorkDir,'Muller2019_GPlatesModel')
         raster_folder = os.path.join(Data_Folder,'Age_Raster_Files')
         raster_filename_base = os.path.join(raster_folder,'Muller_etal_2019_Tectonics_v2.0_AgeGrid')
+        PointsToExclude = np.array([[6.,10.,117. ,118. ,15.,17.45], # Philippine (trench 6), 10 Myr, remove points SOUTH-WEST of triple junction, LAT 17.5
+                                    [3.,50.,-128.,-118.,58.,69.  ]])# Aleutian (trench 3), 50 Myr, remove points EAST of Aleutian curve, LON -127.8
         print('\nCreating 2019 compilation')
-        set_variables(WorkDir,Data_Folder,raster_folder,raster_filename_base,YEAR)
+        set_variables(WorkDir,Data_Folder,raster_folder,raster_filename_base,PointsToExclude,YEAR)
         ### Compile the 2016 compilation
         YEAR = 2016
         WorkDir = os.path.join(os.getcwd(),'2016_Compilation')
         Data_Folder = os.path.join(WorkDir,'Muller2016_GPlatesModel')
         raster_folder = os.path.join(Data_Folder,'Age_Raster_Files')
         raster_filename_base = os.path.join(raster_folder,'EarthByte_AREPS_v1.15_Muller_etal_2016_AgeGrid')
+        PointsToExclude = np.array([[6,10,118.5,119.2,13. ,17.4], # Philippine (trench 6), 10 Myr, remove points SOUTH-WEST of triple junction, LAT 17.4
+                                    [4,60,125.6,126.8,14.1,26. ], # Japan (trench 4), 60 Myr, remove points SOUTH of Ryukyu trench, LAT 17.5
+                                    [8,0, 103. ,106.4,-8.7,-8.2]])# Sumatra (trench 8), 0 Myr,  remove points EAST of LON 126.947
         print('\nCreating 2016 compilation')
-        set_variables(WorkDir,Data_Folder,raster_folder,raster_filename_base,YEAR)
+        set_variables(WorkDir,Data_Folder,raster_folder,raster_filename_base,PointsToExclude,YEAR)
 
-    def set_variables(WorkDir,Data_Folder,raster_folder,raster_filename_base,YEAR):
+    def set_variables(WorkDir,Data_Folder,raster_folder,raster_filename_base,PointsToExclude,YEAR):
         raster_filename_ext  = 'nc'
         ROTFile  = "MergedRot.rot"
         if ROTFile not in os.listdir(Data_Folder): #check if .rot files are merged
@@ -436,6 +437,6 @@ if __name__ == '__main__':
         GenerateCompilationAllPoints(rotation_model, topology_filename, raster_filename_base,
                                      raster_filename_ext, WorkDir, YEAR, 0, 120, 1, 50)
         SaveIDsAndDescriptionsAllPoints(topology_filename, WorkDir)
-        GenerateCompilationMainTrenches(WorkDir)
+        GenerateCompilationMainTrenches(PointsToExclude, WorkDir)
 
     main()

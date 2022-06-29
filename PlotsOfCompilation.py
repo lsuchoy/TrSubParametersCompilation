@@ -44,12 +44,12 @@ def PlotTrenchThroughTime(SubductionData_MainTr,SaveDir):
             Projection = ccrs.Orthographic(central_longitude=180.+(0.5*(min(Lons)+max(Lons))))
         Cmap = plt.get_cmap('jet', ListReconstructionTimes.size) # JET Color map
 
-        fig = plt.figure()
+        fig = plt.figure(figsize=(10, 10))
         ax = fig.add_subplot(1, 1, 1, projection=Projection)
         ax.add_feature(cpy.feature.COASTLINE, color=[0,0,0,.1]) # COASTLINE (present day) feature from cartopy
         ax.add_feature(cpy.feature.LAND, color=[0,0,0,.1]) # LAND (landmass at present day) feature from cartopy
         gl = ax.gridlines(crs=ccrs.PlateCarree(), color=[.9,.7,.7], linestyle='--',zorder=1) # Plot gridlines
-        sctr = ax.scatter(Lons,Lats,c=ReconstructionTimes,vmin=VMin,vmax=VMax,cmap=Cmap,transform=ccrs.PlateCarree(),zorder=2) # Plot data
+        sctr = ax.scatter(Lons,Lats,c=ReconstructionTimes,s=1,vmin=VMin,vmax=VMax,cmap=Cmap,transform=ccrs.PlateCarree(),zorder=2) # Plot data
         cb = fig.colorbar(sctr,orientation='horizontal') # Colorbar (horizontal)
         cb.set_label('Reconstruction time [Myr]') # Colorbar label
 
@@ -141,7 +141,7 @@ def GlobalAgePlots(SubductionData_AllTr, topology_filename, rotation_model, rast
                     Age_AgeGrid.append(float(Zg[int(Lats_AgeGrid[i]),int(Lons_AgeGrid[i])]))
                 
                 ### Plot and save
-                fig = plt.figure()
+                fig = plt.figure(figsize=(10, 10))
                 PlotMaps(Lons,Lats,PlateBoundaries,Coastlines,Lons_AgeGrid,Lats_AgeGrid,Age_AgeGrid,AgeGridRes,Vel_arrows_points,Vel_arrows_vectors,YEAR)
                 fig.tight_layout()
                 Path = os.path.join(SaveDir,"GlobalAgeMaps")
@@ -174,15 +174,15 @@ def GlobalAgePlots(SubductionData_AllTr, topology_filename, rotation_model, rast
         for LatsLonsCoastlines in Coastlines:
             ax.fill(LatsLonsCoastlines[:,1], LatsLonsCoastlines[:,0], transform=ccrs.PlateCarree(), facecolor=C_landmass, zorder=0, rasterized=True)      
         # Plot age grid
-        if YEAR==2019: ax.scatter(0.1*Lons_AgeGrid-180, 0.1*Lats_AgeGrid-90, c=Age_AgeGrid, cmap='gist_earth_r', vmin=0, vmax=120, transform=ccrs.PlateCarree(), zorder=3, rasterized=True)
-        elif YEAR==2016: ax.scatter(0.1*Lons_AgeGrid, 0.1*Lats_AgeGrid-90, c=Age_AgeGrid, cmap='gist_earth_r', vmin=0, vmax=120, transform=ccrs.PlateCarree(), zorder=3, rasterized=True)
+        if YEAR==2019: ax.scatter(0.1*Lons_AgeGrid-180, 0.1*Lats_AgeGrid-90, c=Age_AgeGrid, s=1, cmap='gist_earth_r', vmin=0, vmax=120, transform=ccrs.PlateCarree(), zorder=3, rasterized=True)
+        elif YEAR==2016: ax.scatter(0.1*Lons_AgeGrid, 0.1*Lats_AgeGrid-90, c=Age_AgeGrid, s=1, cmap='gist_earth_r', vmin=0, vmax=120, transform=ccrs.PlateCarree(), zorder=3, rasterized=True)
 
         # Plot velocity arrows
         q = ax.quiver(Vel_arrows_points[:,1], Vel_arrows_points[:,0], Vel_arrows_vectors[:,1], 
                       Vel_arrows_vectors[:,0], color=C_arrows, transform=ccrs.PlateCarree(), zorder=9)
         ax.quiverkey(q, 0.1, 0.1, 5, r'$5 \frac{cm}{yr}$', labelpos='N',coordinates='figure')
         # Plot trenches
-        sc = ax.scatter(Lons, Lats, c=C_trenches, transform=ccrs.PlateCarree(), zorder=7, rasterized=True)
+        sc = ax.scatter(Lons, Lats, s=2, c=C_trenches, transform=ccrs.PlateCarree(), zorder=7, rasterized=True)
         # Plot gridlines
         gl = ax.gridlines(crs=ccrs.PlateCarree(), color=C_gridlines, linestyle='--',zorder=3)
 
