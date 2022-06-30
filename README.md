@@ -4,7 +4,7 @@ Code to compile and analyse subduction parameters along the trenches in the GPla
 Please refer to Chapter 2 in the PhD thesis of Lior Suchoy at Imperial College London *(change this with DOI after publication)* for further details and proper referencing.
 
 ## Overview
-The codes contained in this repository are used to create a compliation of parameters of subduction zones along the global subduction system back through time. It uses, as inputs, two plate reconstruction models by *Müller et al. (2016)*$^1$ and *Müller et al. (2019)*$^2$. For each GPlates model it extracts age, velocities and IDs at the latitudes and lontitudes of trenches globaly. these parameters are extracted for the last 120 Myr (in 1 Myr steps). These codes also create a second compilation of subduction zone parameters along the main trenches in the Pacific and Indian Oceans during the last 60 Myr (in 10 Myr steps). Mean values and standard deviations for the age and velocities are calculated along these main trenches. This data is saved in .csv format for use in different applications.
+The codes contained in this repository are used to create a compliation of parameters of subduction zones along the global subduction system back through time. It uses, as inputs, two plate reconstruction models by *Müller et al. (2016)*[^1] and *Müller et al. (2019)*[^2]. For each GPlates model it extracts age, velocities and IDs at the latitudes and lontitudes of trenches globaly. these parameters are extracted for the last 120 Myr (in 1 Myr steps). These codes also create a second compilation of subduction zone parameters along the main trenches in the Pacific and Indian Oceans during the last 60 Myr (in 10 Myr steps). Mean values and standard deviations for the age and velocities are calculated along these main trenches. This data is saved in .csv format for use in different applications.
 
 The parameters used in the compilation for all trenches are:
 1. Reconstruction time \[Myr\]
@@ -22,7 +22,7 @@ For each type of velocity, the compilation includes the angle to the trench \[°
 Additional parameters added for the compilation of main trenches are:
 1. Main plate ID
 2. Main trench ID
-3. Subducting plate surface area \[km$^2$\]
+3. Subducting plate surface area \[km^2^\]
 4. Age and velocity mean values
 5. Age and velocity standard deviation
 
@@ -34,9 +34,9 @@ Additional compilation of parameters along spreading ridges is also generated us
 5. Arc (segment) length \[m\]
 6. Spreading arc normal azimuth \[°\]
 
-$^1$ https://doi.org/10.1146/annurev-earth-060115-012211, GPlates model files can be found in https://www.earthbyte.org/
+[^1]: https://doi.org/10.1146/annurev-earth-060115-012211, GPlates model files can be found in https://www.earthbyte.org/
 
-$^2$ https://doi.org/10.1029/2018TC005462, GPlates model files can be found in https://www.earthbyte.org/
+[^2]: https://doi.org/10.1029/2018TC005462, GPlates model files can be found in https://www.earthbyte.org/
 
 ## Files
 
@@ -63,6 +63,11 @@ $^2$ https://doi.org/10.1029/2018TC005462, GPlates model files can be found in h
 ## Usage
 The .csv data type is very common and can be used with any table reader (e.g. MS Excel). In the attached codes, the file is imported using Numpy loadtxt command (with delimiter=',' and skiprows=#of_header_rows). Once imported, the compilation can be manipulated as any other numpy array. More complex manipulation of the data (such as importing the headers) can be done using Pandas.
 
+The Python scripts were built and executed using the following modules and versions:
+
+- **Python 3.8.13**, **Cartopy 0.18.0**, **Matplotlib 3.5.1**, **Netcdf4 1.5.7** and **Numpy 1.22.3**.
+- Some files from the **ptt** (plate tectonics tools) module are also included in this depository (subduction_convergence.py, ridge_spreading_rate.py and separate_ridge_transform_segments.py). The ptt module is a custom-made module for plate tectonics calculations of GPlates plate reconstruction models that was created and maintained by John Cannon and can be found at https://github.com/EarthByte/PlateTectonicTools. 
+- **pyGPlates 2.8** was used for these codes and is included in the repository 
 
 ## Work process
 
