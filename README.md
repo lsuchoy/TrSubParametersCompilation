@@ -1,7 +1,7 @@
 # Compilation of Subduction Parameters on Global Trenches
 Code to compile and analyse subduction parameters along the trenches in the GPlates models published by Müller et al. (2016) and Müller et al. (2019). Written and tested by Lior Suchoy, Imperial College London.
 
-Please refer to Chapter 2 in the PhD thesis of Lior Suchoy at Imperial College London *(change this with DOI after publication)* for further details and proper referencing.
+Please refer to Chapter 2 in the PhD thesis of Lior Suchoy at Imperial College London ***(change this with DOI after publication)*** for further details and proper referencing.
 
 ## Overview
 The codes contained in this repository are used to create a compliation of parameters of subduction zones along the global subduction system back through time. It uses, as inputs, two plate reconstruction models by *Müller et al. (2016)*[^1] and *Müller et al. (2019)*[^2]. For each GPlates model it extracts age, velocities and IDs at the latitudes and lontitudes of trenches globaly. these parameters are extracted for the last 120 Myr (in 1 Myr steps). These codes also create a second compilation of subduction zone parameters along the main trenches in the Pacific and Indian Oceans during the last 60 Myr (in 10 Myr steps). Mean values and standard deviations for the age and velocities are calculated along these main trenches. This data is saved in .csv format for use in different applications.
@@ -22,7 +22,7 @@ For each type of velocity, the compilation includes the angle to the trench \[°
 Additional parameters added for the compilation of main trenches are:
 1. Main plate ID
 2. Main trench ID
-3. Subducting plate surface area \[km^2^\]
+3. Subducting plate surface area \[km$^2$\]
 4. Age and velocity mean values
 5. Age and velocity standard deviation
 
@@ -67,7 +67,7 @@ The Python scripts were built and executed using the following modules and versi
 
 - **Python 3.8.13**, **Cartopy 0.18.0**, **Matplotlib 3.5.1**, **Netcdf4 1.5.7** and **Numpy 1.22.3**.
 - Some files from the **ptt** (plate tectonics tools) module are also included in this depository (subduction_convergence.py, ridge_spreading_rate.py and separate_ridge_transform_segments.py). The ptt module is a custom-made module for plate tectonics calculations of GPlates plate reconstruction models that was created and maintained by John Cannon and can be found at https://github.com/EarthByte/PlateTectonicTools. 
-- **pyGPlates 2.8** was used for these codes and is included in the repository 
+- **pyGPlates 2.8** module was used for these codes and is included in the repository.
 
 ## Work process
 
